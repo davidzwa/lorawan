@@ -669,7 +669,7 @@ LorawanMacHelper::SetSpreadingFactorsGivenDistribution (NodeContainer endDevices
 } //  end function
 
 std::vector<LoraDeviceAddress>
-LoraMacHelper::CreateNMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint32_t numberOfDevicesPerGroups, uint8_t enableCoordinatedRelaying)
+LorawanMacHelper::CreateNMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint32_t numberOfDevicesPerGroups, uint8_t enableCoordinatedRelaying)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -698,7 +698,7 @@ LoraMacHelper::CreateNMulticastGroup (NodeContainer endDevices, NodeContainer ga
 }
 
 std::vector<LoraDeviceAddress>
-LoraMacHelper::CreateNMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint32_t numberOfDevicesPerGroups, uint8_t dr, uint8_t pingSlotPeriodicity, uint8_t enableCoordinatedRelaying, double channel)
+LorawanMacHelper::CreateNMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint32_t numberOfDevicesPerGroups, uint8_t dr, uint8_t pingSlotPeriodicity, uint8_t enableCoordinatedRelaying, double channel)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -726,7 +726,7 @@ LoraMacHelper::CreateNMulticastGroup (NodeContainer endDevices, NodeContainer ga
 
 
 LoraDeviceAddress
-LoraMacHelper::CreateMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint8_t enableCoordinatedRelaying)
+LorawanMacHelper::CreateMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint8_t enableCoordinatedRelaying)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -745,17 +745,17 @@ LoraMacHelper::CreateMulticastGroup (NodeContainer endDevices, NodeContainer gat
   for (NodeContainer::Iterator i = gateways.Begin (); i != gateways.End (); ++i)
     {
       //Assumes gateway mac is on the first device
-      Ptr<GatewayLoraMac> gwLoraMac = (*i)->GetDevice (0)->GetObject<LoraNetDevice> ()->
-                                         GetMac ()->GetObject<GatewayLoraMac> ();
+      Ptr<GatewayLorawanMac> gwLorawanMac = (*i)->GetDevice (0)->GetObject<LoraNetDevice> ()->
+                                         GetMac ()->GetObject<GatewayLorawanMac> ();
       //Add the multicast address to gateways list of multicat addresses
-      gwLoraMac->AddMulticastGroup (mcDevAddr);
+      gwLorawanMac->AddMulticastGroup (mcDevAddr);
     }
   
   return mcDevAddr;
 }
 
 LoraDeviceAddress
-LoraMacHelper::CreateMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint8_t dr, uint8_t pingSlotPeriodicity, uint8_t enableCoordinatedRelaying, double channel)
+LorawanMacHelper::CreateMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint8_t dr, uint8_t pingSlotPeriodicity, uint8_t enableCoordinatedRelaying, double channel)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -774,17 +774,17 @@ LoraMacHelper::CreateMulticastGroup (NodeContainer endDevices, NodeContainer gat
   for (NodeContainer::Iterator i = gateways.Begin (); i != gateways.End (); ++i)
     {
       //Assumes gateway mac is on the first device
-      Ptr<GatewayLoraMac> gwLoraMac = (*i)->GetDevice (0)->GetObject<LoraNetDevice> ()->
-                                         GetMac ()->GetObject<GatewayLoraMac> ();
+      Ptr<GatewayLorawanMac> gwLorawanMac = (*i)->GetDevice (0)->GetObject<LoraNetDevice> ()->
+                                         GetMac ()->GetObject<GatewayLorawanMac> ();
       //Add the multicast address to gateways list of multicat addresses
-      gwLoraMac->AddMulticastGroup (mcDevAddr);
+      gwLorawanMac->AddMulticastGroup (mcDevAddr);
     }
   
   return mcDevAddr;
 }
 
 void
-LoraMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDevAddr, uint8_t enableCoordinatedRelaying, uint32_t numberOfEndDevicesinMcGroup)
+LorawanMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDevAddr, uint8_t enableCoordinatedRelaying, uint32_t numberOfEndDevicesinMcGroup)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -793,7 +793,7 @@ LoraMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDevAd
   Ptr<LoraNetDevice> loraNetDevice = netDevice->GetObject<LoraNetDevice> ();
   NS_ASSERT (loraNetDevice != 0);
       
-  Ptr<EndDeviceLoraMac> mac = loraNetDevice->GetMac ()->GetObject<EndDeviceLoraMac> ();
+  Ptr<EndDeviceLorawanMac> mac = loraNetDevice->GetMac ()->GetObject<EndDeviceLorawanMac> ();
   NS_ASSERT (mac != 0);
   
   //Setting the multicast address for the end device
@@ -812,7 +812,7 @@ LoraMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDevAd
 }
 
 void
-LoraMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDevAddr, uint8_t dr, uint8_t pingSlotPeriodicity, uint8_t enableCoordinatedRelaying, uint32_t numberOfEndDevicesinMcGroup, double channel)
+LorawanMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDevAddr, uint8_t dr, uint8_t pingSlotPeriodicity, uint8_t enableCoordinatedRelaying, uint32_t numberOfEndDevicesinMcGroup, double channel)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -821,7 +821,7 @@ LoraMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDevAd
   Ptr<LoraNetDevice> loraNetDevice = netDevice->GetObject<LoraNetDevice> ();
   NS_ASSERT (loraNetDevice != 0);
       
-  Ptr<EndDeviceLoraMac> mac = loraNetDevice->GetMac ()->GetObject<EndDeviceLoraMac> ();
+  Ptr<EndDeviceLorawanMac> mac = loraNetDevice->GetMac ()->GetObject<EndDeviceLorawanMac> ();
   NS_ASSERT (mac != 0);
   
   //Setting the multicast address for the end device
@@ -845,7 +845,7 @@ LoraMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDevAd
 }
 
 void
-LoraMacHelper::EnableBeaconTransmission (NodeContainer gateways)
+LorawanMacHelper::EnableBeaconTransmission (NodeContainer gateways)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -854,8 +854,8 @@ LoraMacHelper::EnableBeaconTransmission (NodeContainer gateways)
       Ptr<Node> gateway = (*j);
       
       // Get the gateway's LoRa MAC layer (assumes gateway's MAC is configured as first device)
-      Ptr<GatewayLoraMac> gwMac = gateway->GetDevice (0)->GetObject<LoraNetDevice> ()->
-         GetMac ()->GetObject<GatewayLoraMac> ();
+      Ptr<GatewayLorawanMac> gwMac = gateway->GetDevice (0)->GetObject<LoraNetDevice> ()->
+         GetMac ()->GetObject<GatewayLorawanMac> ();
       NS_ASSERT (gwMac != 0);
       
       //Enabling Beaconing
@@ -864,7 +864,7 @@ LoraMacHelper::EnableBeaconTransmission (NodeContainer gateways)
 }
 
 void
-LoraMacHelper::EnableClassBDownlinkTransmission (NodeContainer gateways)
+LorawanMacHelper::EnableClassBDownlinkTransmission (NodeContainer gateways)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -873,8 +873,8 @@ LoraMacHelper::EnableClassBDownlinkTransmission (NodeContainer gateways)
       Ptr<Node> gateway = (*j);
       
       // Get the gateway's LoRa MAC layer (assumes gateway's MAC is configured as first device)
-      Ptr<GatewayLoraMac> gwMac = gateway->GetDevice (0)->GetObject<LoraNetDevice> ()->
-         GetMac ()->GetObject<GatewayLoraMac> ();
+      Ptr<GatewayLorawanMac> gwMac = gateway->GetDevice (0)->GetObject<LoraNetDevice> ()->
+         GetMac ()->GetObject<GatewayLorawanMac> ();
       NS_ASSERT (gwMac != 0);
       
       //Enabling Beaconing

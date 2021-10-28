@@ -38,13 +38,13 @@ namespace lorawan {
 /**
  * Class representing the MAC layer of a Class A LoRaWAN device.
  */
-class ClassAEndDeviceLorawanMac : public EndDeviceLorawanMac
+class ClassBEndDeviceLorawanMac : public EndDeviceLorawanMac
 {
 public:
   static TypeId GetTypeId (void);
 
-  ClassAEndDeviceLorawanMac ();
-  virtual ~ClassAEndDeviceLorawanMac ();
+  ClassBEndDeviceLorawanMac ();
+  virtual ~ClassBEndDeviceLorawanMac ();
 
   /////////////////////
   // Sending methods //
@@ -341,7 +341,7 @@ public:
    * callback with the slot index it is received at.
    * 
    * This is called by the Receive method when a packet is received while the 
-   * EndDeviceLoraMac is in the PINGSLOT context.
+   * EndDeviceLorawanMac is in the PINGSLOT context.
    * 
    * \param packet the packet that is received in the ping slot
    */
@@ -913,7 +913,7 @@ private:
   
   std::list<Ptr<Packet>> m_packetToRelay; ///< Packet to be relayed to the next
   
-}; /* ClassAEndDeviceLorawanMac */
+}; /* ClassBEndDeviceLorawanMac */
 } /* namespace lorawan */
 } /* namespace ns3 */
 #endif /* CLASS_A_END_DEVICE_LORAWAN_MAC_H */

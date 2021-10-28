@@ -524,7 +524,7 @@ public:
    * callback with the slot index it is received at.
    * 
    * This is called by the Receive method when a packet is received while the 
-   * EndDeviceLoraMac is in the PINGSLOT context.
+   * EndDeviceLorawanMac is in the PINGSLOT context.
    * 
    * \param packet the packet that is received in the ping slot
    */

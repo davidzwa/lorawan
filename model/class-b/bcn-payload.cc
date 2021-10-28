@@ -20,7 +20,7 @@
 
 #include "ns3/bcn-payload.h"
 #include "ns3/log.h"
-#include "src/network/model/buffer.h"
+#include "ns3/buffer.h"
 #include "ns3/nstime.h"
 #include "ns3/simulator.h"
 #include <bitset>

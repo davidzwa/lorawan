@@ -109,78 +109,78 @@ EndDeviceLorawanMac::GetTypeId (void)
     .AddTraceSource ("MacState",
                      "The current Mac state of the device",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_macState),
-                     "ns3::TracedValueCallback::EndDeviceLoraMac::MacState")
+                       (&EndDeviceLorawanMac::m_macState),
+                     "ns3::TracedValueCallback::EndDeviceLorawanMac::MacState")
     .AddTraceSource ("DeviceClass",
                      "The current device class of the device",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_deviceClass),
-                     "ns3::TracedValueCallback::EndDeviceLoraMac::DeviceClass")
+                       (&EndDeviceLorawanMac::m_deviceClass),
+                     "ns3::TracedValueCallback::EndDeviceLorawanMac::DeviceClass")
     .AddTraceSource ("BeaconState",
                      "The current beacon state of the device",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_beaconState),
-                     "ns3::TracedValueCallback::EndDeviceLoraMac::BeaconState")    
+                       (&EndDeviceLorawanMac::m_beaconState),
+                     "ns3::TracedValueCallback::EndDeviceLorawanMac::BeaconState")    
     .AddTraceSource ("ReceivedPingMessages",
                      "The packet received via ping slot",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_receivedPingPacket),
-                     "ns3::EndDeviceLoraMac::ReceivedPingPacket")
+                       (&EndDeviceLorawanMac::m_receivedPingPacket),
+                     "ns3::EndDeviceLorawanMac::ReceivedPingPacket")
     .AddTraceSource ("FailedPings",
                      "Number of packets failed while receiving in the ping slots",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_failedPings),
+                       (&EndDeviceLorawanMac::m_failedPings),
                      "ns3::TracedValueCallback::Uint32")
     .AddTraceSource ("TotalSuccessfulBeaconPackets",
                      "Number of beacons successfully received during the simulation time",
                      MakeTraceSourceAccessor
-                      (&EndDeviceLoraMac::m_totalSuccessfulBeaconPackets),
+                      (&EndDeviceLorawanMac::m_totalSuccessfulBeaconPackets),
                      "ns3::TracedValueCallback::Uint32")
     .AddTraceSource ("TotalSuccessfulBeaconPacketsTracedCallback",
                      "Number of beacons successfully received during the simulation time",
                      MakeTraceSourceAccessor
-                      (&EndDeviceLoraMac::m_totalSuccessfulBeaconPacketsTracedCallback),
-                     "ns3::EndDeviceLoraMac::CustomTracedValue")  
+                      (&EndDeviceLorawanMac::m_totalSuccessfulBeaconPacketsTracedCallback),
+                     "ns3::EndDeviceLorawanMac::CustomTracedValue")  
     .AddTraceSource ("MissedBeaconCount",
                      "Number of beacons missed throughout the simulation period including during switch to class B attempts",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_missedBeaconCount),
+                       (&EndDeviceLorawanMac::m_missedBeaconCount),
                      "ns3::TracedValueCallback::Uint32")
     .AddTraceSource ("MissedBeaconTracedCallback",
                      "Number of beacons missed throughout the simulation period including during switch to class B attempts",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_missedBeaconTracedCallback),
-                     "ns3::EndDeviceLoraMac::CustomTracedValue")  
+                       (&EndDeviceLorawanMac::m_missedBeaconTracedCallback),
+                     "ns3::EndDeviceLorawanMac::CustomTracedValue")  
     .AddTraceSource ("MaximumConsecutiveBeaconsMissed",
                      "The maximum number of beacons missed consecutively",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_maximumConsecutiveBeaconsMissed),
+                       (&EndDeviceLorawanMac::m_maximumConsecutiveBeaconsMissed),
                      "ns3::TracedValueCallback::Uint8")    
     .AddTraceSource ("CurrentConsecutiveBeaconsMissed",
                      "The number of beacons missed until now consecutively if the device is in minimal beaconless operation mode",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_currentConsecutiveBeaconsMissed),
+                       (&EndDeviceLorawanMac::m_currentConsecutiveBeaconsMissed),
                      "ns3::TracedValueCallback::Uint8")
     .AddTraceSource ("CurrentConsecutiveBeaconsMissedTracedCallback",
                      "The number of beacons missed until now consecutively if the device is in minimal beaconless operation mode",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_currentConsecutiveBeaconsMissedTracedCallback),
-                     "ns3::EndDeviceLoraMac::CustomTracedValue")  
+                       (&EndDeviceLorawanMac::m_currentConsecutiveBeaconsMissedTracedCallback),
+                     "ns3::EndDeviceLorawanMac::CustomTracedValue")  
     .AddTraceSource ("AttemptToClassB",
                      "The number of attempt in the simulation time to switch to class B",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_attemptToClassB),
+                       (&EndDeviceLorawanMac::m_attemptToClassB),
                      "ns3::TracedValueCallback::Uint32") 
     .AddTraceSource ("TotalBytesReceived",
                      "The number of downlink bytes received by the device",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_totalBytesReceived),
+                       (&EndDeviceLorawanMac::m_totalBytesReceived),
                      "ns3::TracedValueCallback::Uint32")
     .AddTraceSource ("NumberOfOverhearedPackets",
                      "The packet that are overheard in the ping slots",
                      MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_numberOfOverhearedPackets),
-                     "ns3::EndDeviceLoraMac::NumberOfOverhearedPackets")      
+                       (&EndDeviceLorawanMac::m_numberOfOverhearedPackets),
+                     "ns3::EndDeviceLorawanMac::NumberOfOverhearedPackets")      
     .AddConstructor<EndDeviceLorawanMac> ();
   return tid;
 }
@@ -205,9 +205,9 @@ EndDeviceLorawanMac::EndDeviceLorawanMac ()
       m_aggregatedDutyCycle (1),
       m_mType (LorawanMacHeader::CONFIRMED_DATA_UP),
       m_currentFCnt (0),
-      m_macState (EndDeviceLoraMac::MAC_IDLE),      
-      m_deviceClass (EndDeviceLoraMac::CLASS_A),
-      m_beaconState (EndDeviceLoraMac::BEACON_UNLOCKED),
+      m_macState (EndDeviceLorawanMac::MAC_IDLE),      
+      m_deviceClass (EndDeviceLorawanMac::CLASS_A),
+      m_beaconState (EndDeviceLorawanMac::BEACON_UNLOCKED),
       m_slotIndexLastOpened (255),
       m_failedPings (0),
       m_totalSuccessfulBeaconPackets (0),
@@ -237,9 +237,9 @@ EndDeviceLorawanMac::EndDeviceLorawanMac ()
   m_retxParams.retxLeft = m_maxNumbTx;
 
   //Initializing structure for class B beacon and ping
-  m_beaconInfo = EndDeviceLoraMac::BeaconInfo ();
-  m_pingSlotInfo = EndDeviceLoraMac::PingSlotInfo ();
-  m_classBReceiveWindowInfo = EndDeviceLoraMac::ClassBReceiveWindowInfo ();
+  m_beaconInfo = EndDeviceLorawanMac::BeaconInfo ();
+  m_pingSlotInfo = EndDeviceLorawanMac::PingSlotInfo ();
+  m_classBReceiveWindowInfo = EndDeviceLorawanMac::ClassBReceiveWindowInfo ();
   
   //Initialize and void ping slot Events
   //used to cancel events when device Class is switched from Class B to A
@@ -251,7 +251,7 @@ EndDeviceLorawanMac::EndDeviceLorawanMac ()
   }
   
   //Initializing relay power structure 
-  m_relayPower = EndDeviceLoraMac::RelayPower ();
+  m_relayPower = EndDeviceLorawanMac::RelayPower ();
   
 }
 
@@ -326,7 +326,7 @@ EndDeviceLorawanMac::DoSend (Ptr<Packet> packet)
   {
     NS_LOG_DEBUG ("Rescheduling transmission to " << Simulator::Now ()+timeToSend);
     Simulator::Schedule (timeToSend,
-                         &EndDeviceLoraMac::DoSend,
+                         &EndDeviceLorawanMac::DoSend,
                          this,
                          packet);
     return;

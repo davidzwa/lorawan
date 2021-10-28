@@ -333,7 +333,7 @@ LoraFrameHeader::Print (std::ostream &os) const
   os << "ADR=" << m_adr << std::endl;
   os << "ADRAckReq=" << m_adrAckReq << std::endl;
   os << "ACK=" << m_ack << std::endl;
-  os << "FPending=" << m_fPending << std::endl;
+  os << "FPending=" << m_fPendingClassB << std::endl;
   os << "FOptsLen=" << unsigned(m_fOptsLen) << std::endl;
   os << "FCnt=" << unsigned(m_fCnt) << std::endl;
 

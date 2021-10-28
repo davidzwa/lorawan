@@ -515,10 +515,10 @@ NetworkScheduler::SendPingDownlink (LoraDeviceAddress address, bool isMulticast,
       //Check if the gateway is available for transmission
       Ptr<GatewayStatus> gwStatus = m_status->m_gatewayStatuses.at (gwAddress);
      
-      Ptr<GatewayLoraMac> gwLoraMac =  gwStatus->GetGatewayMac ();
+      Ptr<GatewayLorawanMac> gwLorawanMac =  gwStatus->GetGatewayMac ();
       
       //Check if the gateway is class B enabled and available for transmission
-      if (gwLoraMac->IsClassBTransmissionEnabled () && 
+      if (gwLorawanMac->IsClassBTransmissionEnabled () && 
           gwStatus->IsAvailableForTransmission ( m_status-> GetEndDeviceStatus (address)-> GetMac ()->GetPingSlotRecieveWindowFrequency ()))
         {
           //Reserve the Gateway for transmission
@@ -534,8 +534,8 @@ NetworkScheduler::SendPingDownlink (LoraDeviceAddress address, bool isMulticast,
           //frameHeader.SetFCnt ()
           //frameHeader.SetFPort () //this has specific port for fragmented data downlink
             
-           LoraMacHeader macHeader;
-           macHeader.SetMType (LoraMacHeader::UNCONFIRMED_DATA_DOWN); //\TODO allow also a confirmed downlink //\TODO modifiy also the EndDeviceLoraMac to respond to confirmed ones in the ping
+           LorawanMacHeader macHeader;
+           macHeader.SetMType (LorawanMacHeader::UNCONFIRMED_DATA_DOWN); //\TODO allow also a confirmed downlink //\TODO modifiy also the EndDeviceLorawanMac to respond to confirmed ones in the ping
            
            // copy the packet before adding MAC headers
            Ptr<Packet> macPacket = downlinkPacket->Copy ();

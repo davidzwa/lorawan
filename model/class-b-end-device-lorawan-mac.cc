@@ -22,7 +22,7 @@
  *              qiuyukang <b612n@qq.com>
  */
 
-#include "ns3/class-a-end-device-lorawan-mac.h"
+#include "ns3/class-b-end-device-lorawan-mac.h"
 #include "ns3/end-device-lorawan-mac.h"
 #include "ns3/end-device-lora-phy.h"
 #include "ns3/hop-count-tag.h"
@@ -33,118 +33,102 @@
 namespace ns3 {
 namespace lorawan {
 
-NS_LOG_COMPONENT_DEFINE ("ClassAEndDeviceLorawanMac");
+    NS_LOG_COMPONENT_DEFINE("ClassBEndDeviceLorawanMac");
 
-NS_OBJECT_ENSURE_REGISTERED (ClassAEndDeviceLorawanMac);
+    NS_OBJECT_ENSURE_REGISTERED(ClassBEndDeviceLorawanMac);
 
-TypeId
-ClassAEndDeviceLorawanMac::GetTypeId (void)
-{
-static TypeId tid = TypeId ("ns3::ClassAEndDeviceLorawanMac")
-  .SetParent<EndDeviceLorawanMac> ()
-  .SetGroupName ("lorawan")
-  .AddTraceSource ("MacState",
-                     "The current Mac state of the device",
-                     MakeTraceSourceAccessor
-                       (&EndDeviceLoraMac::m_macState),
-                     "ns3::TracedValueCallback::EndDeviceLoraMac::MacState")
-  .AddTraceSource ("DeviceClass",
-                   "The current device class of the device",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_deviceClass),
-                   "ns3::TracedValueCallback::EndDeviceLoraMac::DeviceClass")
-  .AddTraceSource ("BeaconState",
-                   "The current beacon state of the device",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_beaconState),
-                   "ns3::TracedValueCallback::EndDeviceLoraMac::BeaconState")    
-  .AddTraceSource ("ReceivedPingMessages",
-                   "The packet received via ping slot",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_receivedPingPacket),
-                   "ns3::EndDeviceLoraMac::ReceivedPingPacket")
-  .AddTraceSource ("FailedPings",
-                   "Number of packets failed while receiving in the ping slots",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_failedPings),
-                   "ns3::TracedValueCallback::Uint32")
-  .AddTraceSource ("TotalSuccessfulBeaconPackets",
-                   "Number of beacons successfully received during the simulation time",
-                   MakeTraceSourceAccessor
-                    (&EndDeviceLoraMac::m_totalSuccessfulBeaconPackets),
-                   "ns3::TracedValueCallback::Uint32")
-  .AddTraceSource ("TotalSuccessfulBeaconPacketsTracedCallback",
-                   "Number of beacons successfully received during the simulation time",
-                   MakeTraceSourceAccessor
-                    (&EndDeviceLoraMac::m_totalSuccessfulBeaconPacketsTracedCallback),
-                   "ns3::EndDeviceLoraMac::CustomTracedValue")  
-  .AddTraceSource ("MissedBeaconCount",
-                   "Number of beacons missed throughout the simulation period including during switch to class B attempts",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_missedBeaconCount),
-                   "ns3::TracedValueCallback::Uint32")
-  .AddTraceSource ("MissedBeaconTracedCallback",
-                   "Number of beacons missed throughout the simulation period including during switch to class B attempts",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_missedBeaconTracedCallback),
-                   "ns3::EndDeviceLoraMac::CustomTracedValue")  
-  .AddTraceSource ("MaximumConsecutiveBeaconsMissed",
-                   "The maximum number of beacons missed consecutively",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_maximumConsecutiveBeaconsMissed),
-                   "ns3::TracedValueCallback::Uint8")    
-  .AddTraceSource ("CurrentConsecutiveBeaconsMissed",
-                   "The number of beacons missed until now consecutively if the device is in minimal beaconless operation mode",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_currentConsecutiveBeaconsMissed),
-                   "ns3::TracedValueCallback::Uint8")
-  .AddTraceSource ("CurrentConsecutiveBeaconsMissedTracedCallback",
-                   "The number of beacons missed until now consecutively if the device is in minimal beaconless operation mode",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_currentConsecutiveBeaconsMissedTracedCallback),
-                   "ns3::EndDeviceLoraMac::CustomTracedValue")  
-  .AddTraceSource ("AttemptToClassB",
-                   "The number of attempt in the simulation time to switch to class B",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_attemptToClassB),
-                   "ns3::TracedValueCallback::Uint32") 
-  .AddTraceSource ("TotalBytesReceived",
-                   "The number of downlink bytes received by the device",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_totalBytesReceived),
-                   "ns3::TracedValueCallback::Uint32")
-  .AddTraceSource ("NumberOfOverhearedPackets",
-                   "The packet that are overheard in the ping slots",
-                   MakeTraceSourceAccessor
-                     (&EndDeviceLoraMac::m_numberOfOverhearedPackets),
-                   "ns3::EndDeviceLoraMac::NumberOfOverhearedPackets")  
-  .AddConstructor<ClassAEndDeviceLorawanMac> ();
-return tid;
+    TypeId
+    ClassBEndDeviceLorawanMac::GetTypeId(void)
+    {
+        static TypeId tid = TypeId("ns3::ClassBEndDeviceLorawanMac")
+                                .SetParent<EndDeviceLorawanMac>()
+                                .SetGroupName("lorawan")
+                                .AddTraceSource("MacState",
+                                                "The current Mac state of the device",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_macState),
+                                                "ns3::TracedValueCallback::EndDeviceLorawanMac::MacState")
+                                .AddTraceSource("DeviceClass",
+                                                "The current device class of the device",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_deviceClass),
+                                                "ns3::TracedValueCallback::EndDeviceLorawanMac::DeviceClass")
+                                .AddTraceSource("BeaconState",
+                                                "The current beacon state of the device",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_beaconState),
+                                                "ns3::TracedValueCallback::EndDeviceLorawanMac::BeaconState")
+                                .AddTraceSource("ReceivedPingMessages",
+                                                "The packet received via ping slot",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_receivedPingPacket),
+                                                "ns3::EndDeviceLorawanMac::ReceivedPingPacket")
+                                .AddTraceSource("FailedPings",
+                                                "Number of packets failed while receiving in the ping slots",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_failedPings),
+                                                "ns3::TracedValueCallback::Uint32")
+                                .AddTraceSource("TotalSuccessfulBeaconPackets",
+                                                "Number of beacons successfully received during the simulation time",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_totalSuccessfulBeaconPackets),
+                                                "ns3::TracedValueCallback::Uint32")
+                                .AddTraceSource("TotalSuccessfulBeaconPacketsTracedCallback",
+                                                "Number of beacons successfully received during the simulation time",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_totalSuccessfulBeaconPacketsTracedCallback),
+                                                "ns3::EndDeviceLorawanMac::CustomTracedValue")
+                                .AddTraceSource("MissedBeaconCount",
+                                                "Number of beacons missed throughout the simulation period including during switch to class B attempts",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_missedBeaconCount),
+                                                "ns3::TracedValueCallback::Uint32")
+                                .AddTraceSource("MissedBeaconTracedCallback",
+                                                "Number of beacons missed throughout the simulation period including during switch to class B attempts",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_missedBeaconTracedCallback),
+                                                "ns3::EndDeviceLorawanMac::CustomTracedValue")
+                                .AddTraceSource("MaximumConsecutiveBeaconsMissed",
+                                                "The maximum number of beacons missed consecutively",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_maximumConsecutiveBeaconsMissed),
+                                                "ns3::TracedValueCallback::Uint8")
+                                .AddTraceSource("CurrentConsecutiveBeaconsMissed",
+                                                "The number of beacons missed until now consecutively if the device is in minimal beaconless operation mode",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_currentConsecutiveBeaconsMissed),
+                                                "ns3::TracedValueCallback::Uint8")
+                                .AddTraceSource("CurrentConsecutiveBeaconsMissedTracedCallback",
+                                                "The number of beacons missed until now consecutively if the device is in minimal beaconless operation mode",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_currentConsecutiveBeaconsMissedTracedCallback),
+                                                "ns3::EndDeviceLorawanMac::CustomTracedValue")
+                                .AddTraceSource("AttemptToClassB",
+                                                "The number of attempt in the simulation time to switch to class B",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_attemptToClassB),
+                                                "ns3::TracedValueCallback::Uint32")
+                                .AddTraceSource("TotalBytesReceived",
+                                                "The number of downlink bytes received by the device",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_totalBytesReceived),
+                                                "ns3::TracedValueCallback::Uint32")
+                                .AddTraceSource("NumberOfOverhearedPackets",
+                                                "The packet that are overheard in the ping slots",
+                                                MakeTraceSourceAccessor(&EndDeviceLorawanMac::m_numberOfOverhearedPackets),
+                                                "ns3::EndDeviceLorawanMac::NumberOfOverhearedPackets")
+                                .AddConstructor<ClassBEndDeviceLorawanMac>();
+        return tid;
 }
 
-ClassAEndDeviceLorawanMac::ClassAEndDeviceLorawanMac () :
-  // LoraWAN default
-  m_receiveDelay1 (Seconds (1)),
-  // LoraWAN default
-  m_receiveDelay2 (Seconds (2)),
-  m_rx1DrOffset (0),
-  m_mcAddress (LoraDeviceAddress (1)),
-  m_macState (EndDeviceLoraMac::MAC_IDLE),      
-  m_deviceClass (EndDeviceLoraMac::CLASS_A),
-  m_beaconState (EndDeviceLoraMac::BEACON_UNLOCKED),
-  m_slotIndexLastOpened (255),
-  m_failedPings (0),
-  m_totalSuccessfulBeaconPackets (0),
-  m_missedBeaconCount (0),
-  m_maximumConsecutiveBeaconsMissed (0),
-  m_currentConsecutiveBeaconsMissed (0),
-  m_attemptToClassB(0),
-  m_totalBytesReceived (0),
-  m_overheardPacketCount (0),
-  m_enableMulticast (false),
-  m_relayActivated (false),
-  m_relayPending (false),
-  maxHop (2)
+ClassBEndDeviceLorawanMac::ClassBEndDeviceLorawanMac() : // LoraWAN default
+                                                         m_receiveDelay1(Seconds(1)),
+                                                         // LoraWAN default
+                                                         m_receiveDelay2(Seconds(2)),
+                                                         m_rx1DrOffset(0),
+                                                         m_mcAddress(LoraDeviceAddress(1)),
+                                                         m_macState(EndDeviceLorawanMac::MAC_IDLE),
+                                                         m_deviceClass(EndDeviceLorawanMac::CLASS_A),
+                                                         m_beaconState(EndDeviceLorawanMac::BEACON_UNLOCKED),
+                                                         m_slotIndexLastOpened(255),
+                                                         m_failedPings(0),
+                                                         m_totalSuccessfulBeaconPackets(0),
+                                                         m_missedBeaconCount(0),
+                                                         m_maximumConsecutiveBeaconsMissed(0),
+                                                         m_currentConsecutiveBeaconsMissed(0),
+                                                         m_attemptToClassB(0),
+                                                         m_totalBytesReceived(0),
+                                                         m_overheardPacketCount(0),
+                                                         m_enableMulticast(false),
+                                                         m_relayActivated(false),
+                                                         m_relayPending(false),
+                                                         maxHop(2)
 {
   NS_LOG_FUNCTION (this);
 
@@ -157,9 +141,9 @@ ClassAEndDeviceLorawanMac::ClassAEndDeviceLorawanMac () :
   m_secondReceiveWindow.Cancel ();
 
   //Initializing structure for class B beacon and ping
-  m_beaconInfo = EndDeviceLoraMac::BeaconInfo ();
-  m_pingSlotInfo = EndDeviceLoraMac::PingSlotInfo ();
-  m_classBReceiveWindowInfo = EndDeviceLoraMac::ClassBReceiveWindowInfo ();
+  m_beaconInfo = EndDeviceLorawanMac::BeaconInfo ();
+  m_pingSlotInfo = EndDeviceLorawanMac::PingSlotInfo ();
+  m_classBReceiveWindowInfo = EndDeviceLorawanMac::ClassBReceiveWindowInfo ();
   
   //Initialize and void ping slot Events
   //used to cancel events when device Class is switched from Class B to A
@@ -171,10 +155,10 @@ ClassAEndDeviceLorawanMac::ClassAEndDeviceLorawanMac () :
   }
   
   //Initializing relay power structure 
-  m_relayPower = EndDeviceLoraMac::RelayPower ();
+  m_relayPower = EndDeviceLorawanMac::RelayPower ();
 }
 
-ClassAEndDeviceLorawanMac::~ClassAEndDeviceLorawanMac ()
+ClassBEndDeviceLorawanMac::~ClassBEndDeviceLorawanMac()
 {
   NS_LOG_FUNCTION_NOARGS ();
 }
@@ -183,8 +167,7 @@ ClassAEndDeviceLorawanMac::~ClassAEndDeviceLorawanMac ()
 // Sending methods //
 /////////////////////
 
-void
-ClassAEndDeviceLorawanMac::SendToPhy (Ptr<Packet> packetToSend)
+void ClassBEndDeviceLorawanMac::SendToPhy(Ptr<Packet> packetToSend)
 {
   /////////////////////////////////////////////////////////
   // Add headers, prepare TX parameters and send the packet
@@ -254,7 +237,7 @@ ClassAEndDeviceLorawanMac::SendToPhy (Ptr<Packet> packetToSend)
 //  Receiving methods   //
 //////////////////////////
 void
-ClassAEndDeviceLorawanMac::Receive (Ptr<Packet const> packet)
+ClassBEndDeviceLorawanMac::Receive (Ptr<Packet const> packet)
 {
   NS_LOG_FUNCTION (this << packet);
 
@@ -422,7 +405,7 @@ ClassAEndDeviceLorawanMac::Receive (Ptr<Packet const> packet)
 }
 
 void
-ClassAEndDeviceLorawanMac::FailedReception (Ptr<Packet const> packet)
+ClassBEndDeviceLorawanMac::FailedReception (Ptr<Packet const> packet)
 {
   NS_LOG_FUNCTION (this << packet);
 
@@ -481,7 +464,7 @@ if (m_macState == MAC_BEACON_RESERVED)
 }
 
 void
-ClassAEndDeviceLorawanMac::TxFinished (Ptr<const Packet> packet)
+ClassBEndDeviceLorawanMac::TxFinished (Ptr<const Packet> packet)
 {
   NS_LOG_FUNCTION_NOARGS ();
 
@@ -519,19 +502,19 @@ ClassAEndDeviceLorawanMac::TxFinished (Ptr<const Packet> packet)
   
   // Schedule the opening of the first receive window
   Simulator::Schedule (m_receiveDelay1,
-                       &ClassAEndDeviceLorawanMac::OpenFirstReceiveWindow, this);
+                       &ClassBEndDeviceLorawanMac::OpenFirstReceiveWindow, this);
 
   // Schedule the opening of the second receive window
   m_secondReceiveWindow = Simulator::Schedule (m_receiveDelay2,
-                                               &ClassAEndDeviceLorawanMac::OpenSecondReceiveWindow,
+                                               &ClassBEndDeviceLorawanMac::OpenSecondReceiveWindow,
                                                this);
   // // Schedule the opening of the first receive window
   // Simulator::Schedule (m_receiveDelay1,
-  //                      &ClassAEndDeviceLorawanMac::OpenFirstReceiveWindow, this);
+  //                      &ClassBEndDeviceLorawanMac::OpenFirstReceiveWindow, this);
   //
   // // Schedule the opening of the second receive window
   // m_secondReceiveWindow = Simulator::Schedule (m_receiveDelay2,
-  //                                              &ClassAEndDeviceLorawanMac::OpenSecondReceiveWindow,
+  //                                              &ClassBEndDeviceLorawanMac::OpenSecondReceiveWindow,
   //                                              this);
 
   // Switch the PHY to sleep
@@ -542,7 +525,7 @@ ClassAEndDeviceLorawanMac::TxFinished (Ptr<const Packet> packet)
 }
 
 void
-ClassAEndDeviceLorawanMac::OpenFirstReceiveWindow (void)
+ClassBEndDeviceLorawanMac::OpenFirstReceiveWindow (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
 
@@ -556,14 +539,14 @@ ClassAEndDeviceLorawanMac::OpenFirstReceiveWindow (void)
   // device's radio transceiver to effectively detect a downlink preamble"
   // (LoraWAN specification)
   m_closeFirstWindow = Simulator::Schedule (Seconds (m_receiveWindowDurationInSymbols*tSym),
-                                            &ClassAEndDeviceLorawanMac::CloseFirstReceiveWindow, this); //m_receiveWindowDuration
+                                            &ClassBEndDeviceLorawanMac::CloseFirstReceiveWindow, this); //m_receiveWindowDuration
 
   // Mac state is serving first receive window 
   SetMacState (MAC_RX1);
 }
 
 void
-ClassAEndDeviceLorawanMac::CloseFirstReceiveWindow (void)
+ClassBEndDeviceLorawanMac::CloseFirstReceiveWindow (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
 
@@ -596,7 +579,7 @@ ClassAEndDeviceLorawanMac::CloseFirstReceiveWindow (void)
 }
 
 void
-ClassAEndDeviceLorawanMac::OpenSecondReceiveWindow (void)
+ClassBEndDeviceLorawanMac::OpenSecondReceiveWindow (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
 
@@ -628,14 +611,14 @@ ClassAEndDeviceLorawanMac::OpenSecondReceiveWindow (void)
   // device's radio transceiver to effectively detect a downlink preamble"
   // (LoraWAN specification)
   m_closeSecondWindow = Simulator::Schedule (Seconds (m_receiveWindowDurationInSymbols*tSym),
-                                             &ClassAEndDeviceLorawanMac::CloseSecondReceiveWindow, this);
+                                             &ClassBEndDeviceLorawanMac::CloseSecondReceiveWindow, this);
 
   // Mac state is serving second receive window 
   SetMacState (MAC_RX2);
 }
 
 void
-ClassAEndDeviceLorawanMac::CloseSecondReceiveWindow (void)
+ClassBEndDeviceLorawanMac::CloseSecondReceiveWindow (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
 
@@ -706,7 +689,7 @@ ClassAEndDeviceLorawanMac::CloseSecondReceiveWindow (void)
 /////////////////////////
 
 Time
-ClassAEndDeviceLorawanMac::GetNextClassTransmissionDelay (Time waitingTime)
+ClassBEndDeviceLorawanMac::GetNextClassTransmissionDelay (Time waitingTime)
 {
   NS_LOG_FUNCTION_NOARGS ();
 
@@ -746,7 +729,7 @@ ClassAEndDeviceLorawanMac::GetNextClassTransmissionDelay (Time waitingTime)
 }
 
 void
-EndDeviceLoraMac::SetMulticastDeviceAddress(LoraDeviceAddress address)
+EndDeviceLorawanMac::SetMulticastDeviceAddress(LoraDeviceAddress address)
 {
   NS_LOG_FUNCTION (this << address);
   
@@ -762,7 +745,7 @@ EndDeviceLoraMac::SetMulticastDeviceAddress(LoraDeviceAddress address)
 }
 
 LoraDeviceAddress
-EndDeviceLoraMac::GetMulticastDeviceAddress()
+EndDeviceLorawanMac::GetMulticastDeviceAddress()
 {
   NS_LOG_FUNCTION (this);
   
@@ -770,31 +753,31 @@ EndDeviceLoraMac::GetMulticastDeviceAddress()
 }
 
 uint8_t
-ClassAEndDeviceLorawanMac::GetFirstReceiveWindowDataRate (void)
+ClassBEndDeviceLorawanMac::GetFirstReceiveWindowDataRate (void)
 {
   return m_replyDataRateMatrix.at (m_dataRate).at (m_rx1DrOffset);
 }
 
 void
-ClassAEndDeviceLorawanMac::SetSecondReceiveWindowDataRate (uint8_t dataRate)
+ClassBEndDeviceLorawanMac::SetSecondReceiveWindowDataRate (uint8_t dataRate)
 {
   m_secondReceiveWindowDataRate = dataRate;
 }
 
 uint8_t
-ClassAEndDeviceLorawanMac::GetSecondReceiveWindowDataRate (void)
+ClassBEndDeviceLorawanMac::GetSecondReceiveWindowDataRate (void)
 {
   return m_secondReceiveWindowDataRate;
 }
 
 void
-ClassAEndDeviceLorawanMac::SetSecondReceiveWindowFrequency (double frequencyMHz)
+ClassBEndDeviceLorawanMac::SetSecondReceiveWindowFrequency (double frequencyMHz)
 {
   m_secondReceiveWindowFrequency = frequencyMHz;
 }
 
 double
-ClassAEndDeviceLorawanMac::GetSecondReceiveWindowFrequency (void)
+ClassBEndDeviceLorawanMac::GetSecondReceiveWindowFrequency (void)
 {
   return m_secondReceiveWindowFrequency;
 }
@@ -804,7 +787,7 @@ ClassAEndDeviceLorawanMac::GetSecondReceiveWindowFrequency (void)
 /////////////////////////
 
 void
-ClassAEndDeviceLorawanMac::OnRxClassParamSetupReq (Ptr<RxParamSetupReq> rxParamSetupReq)
+ClassBEndDeviceLorawanMac::OnRxClassParamSetupReq (Ptr<RxParamSetupReq> rxParamSetupReq)
 {
   NS_LOG_FUNCTION (this << rxParamSetupReq);
 
@@ -848,7 +831,7 @@ ClassAEndDeviceLorawanMac::OnRxClassParamSetupReq (Ptr<RxParamSetupReq> rxParamS
 ////////////////////////////////////////////////////
 
 Time
-EndDeviceLoraMac::ResolveWithClassBAndGetTime(Ptr<const Packet> packet)
+EndDeviceLorawanMac::ResolveWithClassBAndGetTime(Ptr<const Packet> packet)
 {
   NS_LOG_FUNCTION_NOARGS ();
   // Here we can put different algorithms with if-else so that another API 
@@ -962,7 +945,7 @@ EndDeviceLoraMac::ResolveWithClassBAndGetTime(Ptr<const Packet> packet)
 /////////////////////////////////////////////////
 
 void 
-EndDeviceLoraMac::SwitchToClassB (void)
+EndDeviceLorawanMac::SwitchToClassB (void)
 {
   NS_LOG_FUNCTION_NOARGS (); 
   
@@ -1011,7 +994,7 @@ EndDeviceLoraMac::SwitchToClassB (void)
   
   // Schedule the beaconGuard 
   Simulator::Schedule (nextBeaconGuard,
-                       &EndDeviceLoraMac::StartBeaconGuard,
+                       &EndDeviceLorawanMac::StartBeaconGuard,
                        this);
   
   // Update beaconState
@@ -1020,8 +1003,8 @@ EndDeviceLoraMac::SwitchToClassB (void)
   NS_LOG_DEBUG ( "BeaconGuard scheduled at " << nextAbsoluteBeaconGuardTime);
   
   //Reset beacon and class b window to default
-  m_classBReceiveWindowInfo.beaconReceiveWindowDurationInSymbols = EndDeviceLoraMac::ClassBReceiveWindowInfo().beaconReceiveWindowDurationInSymbols;
-  m_classBReceiveWindowInfo.pingReceiveWindowDurationInSymbols = EndDeviceLoraMac::ClassBReceiveWindowInfo().pingReceiveWindowDurationInSymbols;
+  m_classBReceiveWindowInfo.beaconReceiveWindowDurationInSymbols = EndDeviceLorawanMac::ClassBReceiveWindowInfo().beaconReceiveWindowDurationInSymbols;
+  m_classBReceiveWindowInfo.pingReceiveWindowDurationInSymbols = EndDeviceLorawanMac::ClassBReceiveWindowInfo().pingReceiveWindowDurationInSymbols;
   
   NS_LOG_DEBUG ("Beacon Receive Window Reset to " << (int)(m_classBReceiveWindowInfo.beaconReceiveWindowDurationInSymbols));
   NS_LOG_DEBUG ("Ping Receive Window Reset to " << (int)(m_classBReceiveWindowInfo.pingReceiveWindowDurationInSymbols));
@@ -1030,7 +1013,7 @@ EndDeviceLoraMac::SwitchToClassB (void)
 }
 
 void
-EndDeviceLoraMac::SwitchFromClassB (void)
+EndDeviceLorawanMac::SwitchFromClassB (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -1060,7 +1043,7 @@ EndDeviceLoraMac::SwitchFromClassB (void)
 
 
 void 
-EndDeviceLoraMac::StartBeaconGuard (void)
+EndDeviceLorawanMac::StartBeaconGuard (void)
 {
   
   NS_LOG_FUNCTION_NOARGS ();
@@ -1107,22 +1090,22 @@ EndDeviceLoraMac::StartBeaconGuard (void)
     }
   
   m_beaconInfo.endBeaconGuardEvent = Simulator::Schedule (m_beaconInfo.beaconGuard,
-                                                          &EndDeviceLoraMac::EndBeaconGuard,
+                                                          &EndDeviceLorawanMac::EndBeaconGuard,
                                                           this);
 }
 
 void
-EndDeviceLoraMac::EndBeaconGuard (void)
+EndDeviceLorawanMac::EndBeaconGuard (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
   //Now Start the Beacon_reserved period as the beacon guard is done
   Simulator::Schedule (Seconds (0),
-                       &EndDeviceLoraMac::StartBeaconReserved,
+                       &EndDeviceLorawanMac::StartBeaconReserved,
                        this);
 }
 
 void
-EndDeviceLoraMac::StartBeaconReserved (void)
+EndDeviceLorawanMac::StartBeaconReserved (void)
 {
 
   NS_LOG_FUNCTION_NOARGS ();
@@ -1155,7 +1138,7 @@ EndDeviceLoraMac::StartBeaconReserved (void)
     
   // Schedule return to sleep after current beacon slot receive window duration
   Simulator::Schedule (Seconds (m_classBReceiveWindowInfo.beaconReceiveWindowDurationInSymbols*tSym),
-                       &EndDeviceLoraMac::CloseBeaconReceiveWindow, 
+                       &EndDeviceLorawanMac::CloseBeaconReceiveWindow, 
                        this);
   
   NS_LOG_DEBUG ("The receive window opened for : " << Seconds (m_classBReceiveWindowInfo.beaconReceiveWindowDurationInSymbols*tSym));
@@ -1163,14 +1146,14 @@ EndDeviceLoraMac::StartBeaconReserved (void)
   //Schedule release from beacon reserved so that the mac could start using the 
   //device for transmission and also schedule ping slots
   m_beaconInfo.endBeaconReservedEvent = Simulator::Schedule (m_beaconInfo.beaconReserved,
-                                                             &EndDeviceLoraMac::EndBeaconReserved,
+                                                             &EndDeviceLorawanMac::EndBeaconReserved,
                                                              this);
   
   NS_LOG_DEBUG ("The beacon reserved finishes at: " << (Simulator::Now() + m_beaconInfo.beaconReserved));
 }
 
 void
-EndDeviceLoraMac::CloseBeaconReceiveWindow (void)
+EndDeviceLorawanMac::CloseBeaconReceiveWindow (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
    //Beacon preamble not detected
@@ -1204,7 +1187,7 @@ EndDeviceLoraMac::CloseBeaconReceiveWindow (void)
 }
 
 void
-EndDeviceLoraMac::EndBeaconReserved (void)
+EndDeviceLorawanMac::EndBeaconReserved (void)
 { 
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -1270,7 +1253,7 @@ EndDeviceLoraMac::EndBeaconReserved (void)
         // the next Beacon_guard is after Beacon_window.
         // Need to store the event to cancel incase a switch to class A is requested in the middle
         m_beaconInfo.nextBeaconGuardEvent = Simulator::Schedule (m_beaconInfo.beaconWindow,  
-                                                                 &EndDeviceLoraMac::StartBeaconGuard,
+                                                                 &EndDeviceLorawanMac::StartBeaconGuard,
                                                                  this);
           
         break;
@@ -1283,10 +1266,10 @@ EndDeviceLoraMac::EndBeaconReserved (void)
 }
 
 // This function must be called at the end of BeaconResered which is
-// EndDeviceLoraMac::EndBeaconReserved as it assumes the current time to be the 
+// EndDeviceLorawanMac::EndBeaconReserved as it assumes the current time to be the 
 // end of the BeaconReserved time.
 void
-EndDeviceLoraMac::SchedulePingSlots (void)
+EndDeviceLorawanMac::SchedulePingSlots (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
   // AES part taken with modification from Joseph Finnegan 
@@ -1347,7 +1330,7 @@ EndDeviceLoraMac::SchedulePingSlots (void)
     
      Time slotTime = (m_pingSlotInfo.pingOffset+ slotIndex*m_pingSlotInfo.pingPeriod)*m_pingSlotInfo.slotLen; 
      ping = Simulator::Schedule( slotTime, 
-                                 &EndDeviceLoraMac::OpenPingSlotReceiveWindow,
+                                 &EndDeviceLorawanMac::OpenPingSlotReceiveWindow,
                                  this,
                                  slotIndex);
      NS_ASSERT_MSG (slotTime < m_beaconInfo.beaconWindow, "A slot should only be placed within a beaconWindow duration!");
@@ -1358,7 +1341,7 @@ EndDeviceLoraMac::SchedulePingSlots (void)
 
 
 void
-EndDeviceLoraMac::BeaconMissed (void)
+EndDeviceLorawanMac::BeaconMissed (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -1464,7 +1447,7 @@ EndDeviceLoraMac::BeaconMissed (void)
 //\TODO the bcnPayload has to be replaced from the packet received, otherwise
 // there will be a difference in the time calculated by the gateway and end-device
 void
-EndDeviceLoraMac::BeaconReceived(Ptr<Packet const> packet)
+EndDeviceLorawanMac::BeaconReceived(Ptr<Packet const> packet)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -1494,8 +1477,8 @@ EndDeviceLoraMac::BeaconReceived(Ptr<Packet const> packet)
   NS_LOG_DEBUG ("Last Beacon Received Time Updated to " << m_beaconInfo.deviceBcnTime);
   
   //Reset beacon and class b window to default
-  m_classBReceiveWindowInfo.beaconReceiveWindowDurationInSymbols = EndDeviceLoraMac::ClassBReceiveWindowInfo().beaconReceiveWindowDurationInSymbols;
-  m_classBReceiveWindowInfo.pingReceiveWindowDurationInSymbols = EndDeviceLoraMac::ClassBReceiveWindowInfo().pingReceiveWindowDurationInSymbols;
+  m_classBReceiveWindowInfo.beaconReceiveWindowDurationInSymbols = EndDeviceLorawanMac::ClassBReceiveWindowInfo().beaconReceiveWindowDurationInSymbols;
+  m_classBReceiveWindowInfo.pingReceiveWindowDurationInSymbols = EndDeviceLorawanMac::ClassBReceiveWindowInfo().pingReceiveWindowDurationInSymbols;
   
   NS_LOG_DEBUG ("Beacon Receive Window Reset to " << (int)m_classBReceiveWindowInfo.beaconReceiveWindowDurationInSymbols);
   NS_LOG_DEBUG ("Ping Receive Window Reset to " << (int)m_classBReceiveWindowInfo.pingReceiveWindowDurationInSymbols);
@@ -1525,7 +1508,7 @@ EndDeviceLoraMac::BeaconReceived(Ptr<Packet const> packet)
 
 
 void
-EndDeviceLoraMac::OpenPingSlotReceiveWindow(uint8_t slotIndex)
+EndDeviceLorawanMac::OpenPingSlotReceiveWindow(uint8_t slotIndex)
 {
   //Change Mac state to ping slot
   
@@ -1635,14 +1618,14 @@ EndDeviceLoraMac::OpenPingSlotReceiveWindow(uint8_t slotIndex)
     
   // Schedule return to sleep after current beacon slot receive window duration
   m_pingSlotInfo.closeOpenedPingSlot = Simulator::Schedule (Seconds (m_classBReceiveWindowInfo.pingReceiveWindowDurationInSymbols *tSym),
-                                             &EndDeviceLoraMac::ClosePingSlotRecieveWindow, this);
+                                             &EndDeviceLorawanMac::ClosePingSlotRecieveWindow, this);
   
   //update slot index of the opened ping slot
   m_slotIndexLastOpened = slotIndex;  
 }
 
 void
-EndDeviceLoraMac::ClosePingSlotRecieveWindow()
+EndDeviceLorawanMac::ClosePingSlotRecieveWindow()
 {  
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -1695,7 +1678,7 @@ EndDeviceLoraMac::ClosePingSlotRecieveWindow()
 }
 
 void
-EndDeviceLoraMac::PingReceived(Ptr<Packet const> packet)
+EndDeviceLorawanMac::PingReceived(Ptr<Packet const> packet)
 {
   
   NS_LOG_FUNCTION (this << packet);
@@ -1707,7 +1690,7 @@ EndDeviceLoraMac::PingReceived(Ptr<Packet const> packet)
   Ptr<Packet> packetCopy = packet->Copy ();
   
   // Remove the Mac Header to get some information
-  LoraMacHeader mHdr;
+  LorawanMacHeader mHdr;
   packetCopy->RemoveHeader (mHdr);
 
   NS_LOG_DEBUG ("Mac Header: " << mHdr);
@@ -1743,7 +1726,7 @@ EndDeviceLoraMac::PingReceived(Ptr<Packet const> packet)
          // For now call the callback
          if (!m_classBDownlinkCallback.IsNull ())
             {
-             m_classBDownlinkCallback (EndDeviceLoraMac::UNICAST,packetCopy, m_slotIndexLastOpened);
+             m_classBDownlinkCallback (EndDeviceLorawanMac::UNICAST,packetCopy, m_slotIndexLastOpened);
             }
           
           // Call the trace source 
@@ -1782,7 +1765,7 @@ EndDeviceLoraMac::PingReceived(Ptr<Packet const> packet)
              
              if (!m_classBDownlinkCallback.IsNull ())
                {
-                  m_classBDownlinkCallback (EndDeviceLoraMac::MULTICAST,packetCopy, m_slotIndexLastOpened);
+                  m_classBDownlinkCallback (EndDeviceLorawanMac::MULTICAST,packetCopy, m_slotIndexLastOpened);
                }
               // Call the trace source
               m_receivedPingPacket (m_mcAddress, m_address, packetCopy, m_slotIndexLastOpened); 
@@ -1832,7 +1815,7 @@ EndDeviceLoraMac::PingReceived(Ptr<Packet const> packet)
 /////////////////////////////////
 
 bool
-EndDeviceLoraMac::SetDeviceClass (DeviceClass deviceClass)
+EndDeviceLorawanMac::SetDeviceClass (DeviceClass deviceClass)
 {
   NS_LOG_FUNCTION (this << deviceClass);
   
@@ -1888,14 +1871,14 @@ EndDeviceLoraMac::SetDeviceClass (DeviceClass deviceClass)
 
 }
 
-EndDeviceLoraMac::DeviceClass
-EndDeviceLoraMac::GetDeviceClass ()
+EndDeviceLorawanMac::DeviceClass
+EndDeviceLorawanMac::GetDeviceClass ()
 {
   return m_deviceClass;
 }
 
 void
-EndDeviceLoraMac::SetMacState (MacState macState)
+EndDeviceLorawanMac::SetMacState (MacState macState)
 {
   NS_LOG_FUNCTION (this << macState);
   //Check the logic before making a switch to other state
@@ -2022,8 +2005,8 @@ EndDeviceLoraMac::SetMacState (MacState macState)
   
 }
 
-EndDeviceLoraMac::MacState
-EndDeviceLoraMac::GetMacState ()
+EndDeviceLorawanMac::MacState
+EndDeviceLorawanMac::GetMacState ()
 {
   return m_macState;
 }
@@ -2034,49 +2017,49 @@ EndDeviceLoraMac::GetMacState ()
 ////////////
 
 void
-EndDeviceLoraMac::SetPingSlotReceiveWindowDataRate (uint8_t pingSlotDr)
+EndDeviceLorawanMac::SetPingSlotReceiveWindowDataRate (uint8_t pingSlotDr)
 {
   m_classBReceiveWindowInfo.pingSlotReceiveWindowDataRate = pingSlotDr;
 }
 
 uint8_t
-EndDeviceLoraMac::GetPingSlotReceiveWindowDataRate ()
+EndDeviceLorawanMac::GetPingSlotReceiveWindowDataRate ()
 {
   return m_classBReceiveWindowInfo.pingSlotReceiveWindowDataRate;
 }
 
 void
-EndDeviceLoraMac::SetPingSlotReceiveWindowFrequency (double frequency)
+EndDeviceLorawanMac::SetPingSlotReceiveWindowFrequency (double frequency)
 {
   m_classBReceiveWindowInfo.pingSlotReceiveWindowFrequency = frequency;
 }
 
 double
-EndDeviceLoraMac::GetPingSlotRecieveWindowFrequency ()
+EndDeviceLorawanMac::GetPingSlotRecieveWindowFrequency ()
 {
   return m_classBReceiveWindowInfo.pingSlotReceiveWindowFrequency;
 }
 
 void
-EndDeviceLoraMac::SetBeaconReceiveWindowDataRate (uint8_t beaconDr)
+EndDeviceLorawanMac::SetBeaconReceiveWindowDataRate (uint8_t beaconDr)
 {
   m_classBReceiveWindowInfo.beaconReceiveWindowDataRate = beaconDr;
 }
 
 uint8_t
-EndDeviceLoraMac::GetBeaconRecieveWindowDataRate ()
+EndDeviceLorawanMac::GetBeaconRecieveWindowDataRate ()
 {
   return m_classBReceiveWindowInfo.pingSlotReceiveWindowDataRate;
 }
 
 void
-EndDeviceLoraMac::SetBeaconReceiveWindowFrequency (double frequency)
+EndDeviceLorawanMac::SetBeaconReceiveWindowFrequency (double frequency)
 {
   m_classBReceiveWindowInfo.beaconReceiveWindowFrequency = frequency;
 }
 
 double
-EndDeviceLoraMac::GetBeaconRecieveWindowFrequency ()
+EndDeviceLorawanMac::GetBeaconRecieveWindowFrequency ()
 {
   return m_classBReceiveWindowInfo.beaconReceiveWindowFrequency;
 }
@@ -2086,7 +2069,7 @@ EndDeviceLoraMac::GetBeaconRecieveWindowFrequency ()
 ///////////////////////
 
 void
-EndDeviceLoraMac::SetPingSlotPeriodicity (uint8_t periodicity)
+EndDeviceLorawanMac::SetPingSlotPeriodicity (uint8_t periodicity)
 {
   
   NS_ASSERT_MSG (m_deviceClass!=CLASS_B, "Error! Ping slot periodicity can't be set while operation");
@@ -2108,13 +2091,13 @@ EndDeviceLoraMac::SetPingSlotPeriodicity (uint8_t periodicity)
 }
 
 uint8_t
-EndDeviceLoraMac::GetPingSlotPeriodicity ()
+EndDeviceLorawanMac::GetPingSlotPeriodicity ()
 {
   return m_pingSlotInfo.pingSlotPeriodicity;
 }
 
 void
-EndDeviceLoraMac::SetPingNb (uint8_t pingNb)
+EndDeviceLorawanMac::SetPingNb (uint8_t pingNb)
 {
   
   NS_ASSERT_MSG (m_deviceClass!=CLASS_B, "Error! Ping slot periodicity can't be set while operation");
@@ -2135,13 +2118,13 @@ EndDeviceLoraMac::SetPingNb (uint8_t pingNb)
 }
 
 uint8_t
-EndDeviceLoraMac::GetPingNb ()
+EndDeviceLorawanMac::GetPingNb ()
 {
   return m_pingSlotInfo.pingNb;
 }
 
 void
-EndDeviceLoraMac::SetPingPeriod (uint pingPeriod)
+EndDeviceLorawanMac::SetPingPeriod (uint pingPeriod)
 {
   
   NS_ASSERT_MSG (m_deviceClass!=CLASS_B, "Error! Ping slot periodicity can't be set while operation");
@@ -2162,7 +2145,7 @@ EndDeviceLoraMac::SetPingPeriod (uint pingPeriod)
 }
 
 uint
-EndDeviceLoraMac::GetPingPeriod ()
+EndDeviceLorawanMac::GetPingPeriod ()
 {
   return m_pingSlotInfo.pingPeriod;
 }
@@ -2173,19 +2156,19 @@ EndDeviceLoraMac::GetPingPeriod ()
 //////////////
 
 void
-EndDeviceLoraMac::SetBeaconLockedCallback (Callback<void> beaconLockedCallback)
+EndDeviceLorawanMac::SetBeaconLockedCallback (Callback<void> beaconLockedCallback)
 {
   m_beaconLockedCallback = beaconLockedCallback;
 }
 
 void
-EndDeviceLoraMac::SetBeaconLostCallback (Callback<void> beaconLostCallback)
+EndDeviceLorawanMac::SetBeaconLostCallback (Callback<void> beaconLostCallback)
 {
   m_beaconLostCallback = beaconLostCallback;
 }
 
 void
-EndDeviceLoraMac::SetClassBDownlinkCallback (ClassBDownlinkCallback classBDownlinkCallback)
+EndDeviceLorawanMac::SetClassBDownlinkCallback (ClassBDownlinkCallback classBDownlinkCallback)
 {
   m_classBDownlinkCallback = classBDownlinkCallback;
 }
@@ -2195,7 +2178,7 @@ EndDeviceLoraMac::SetClassBDownlinkCallback (ClassBDownlinkCallback classBDownli
 /////////////////
 
 void
-EndDeviceLoraMac::EnableMulticast (void)
+EndDeviceLorawanMac::EnableMulticast (void)
 {
   if (m_mcAddress.Get () == 1)
     {
@@ -2208,14 +2191,14 @@ EndDeviceLoraMac::EnableMulticast (void)
 }
 
 void
-EndDeviceLoraMac::DisableMulticast ()
+EndDeviceLorawanMac::DisableMulticast ()
 {
   m_enableMulticast = false;
 }
 
 
 bool
-EndDeviceLoraMac::IsMulticastEnabled (void)
+EndDeviceLorawanMac::IsMulticastEnabled (void)
 {
   return m_enableMulticast;
 }
@@ -2230,7 +2213,7 @@ EndDeviceLoraMac::IsMulticastEnabled (void)
 
 
 void
-EndDeviceLoraMac::EnableCoordinatedRelaying (uint32_t numberOfEndDeviceInMcGroup, uint8_t relayingAlgorithm)
+EndDeviceLorawanMac::EnableCoordinatedRelaying (uint32_t numberOfEndDeviceInMcGroup, uint8_t relayingAlgorithm)
 {
   NS_LOG_FUNCTION (this << numberOfEndDeviceInMcGroup << relayingAlgorithm);
   
@@ -2252,7 +2235,7 @@ EndDeviceLoraMac::EnableCoordinatedRelaying (uint32_t numberOfEndDeviceInMcGroup
 }
 
 double
-EndDeviceLoraMac::GetRelayingPower ()
+EndDeviceLorawanMac::GetRelayingPower ()
 {
   NS_LOG_FUNCTION_NOARGS ();
   

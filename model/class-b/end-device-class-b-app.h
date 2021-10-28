@@ -23,9 +23,9 @@
 
 #include "ns3/application.h"
 #include "ns3/nstime.h"
-#include "ns3/lora-mac.h"
+#include "ns3/lorawan-mac.h"
 #include "ns3/attribute.h"
-#include "ns3/end-device-lora-mac.h"
+#include "ns3/end-device-lorawan-mac.h"
 
 namespace ns3 {
 namespace lorawan {
@@ -39,12 +39,12 @@ public:
   static TypeId GetTypeId (void);
   
   /**
-   * Callback invoked by the EndDeviceLoraMac when beacon is locked
+   * Callback invoked by the EndDeviceLorawanMac when beacon is locked
    */
   void BeaconLockedCallback (void);
   
   /**
-   * Callback invoked by the EndDeviceLoraMac when beacon is lost or when the 
+   * Callback invoked by the EndDeviceLorawanMac when beacon is lost or when the 
    * quest to search beacon fails.
    */
   void BeaconLostCallback (void);
@@ -52,7 +52,7 @@ public:
   /**
    * Callback invoked when packet is received via ping slot
    */
-  void ClassBDownlinkCallback (EndDeviceLoraMac::ServiceType serviceType, Ptr<const Packet> packet, uint8_t pingIndex);
+  void ClassBDownlinkCallback (EndDeviceLorawanMac::ServiceType serviceType, Ptr<const Packet> packet, uint8_t pingIndex);
   
   /**
    * Set the Initial delay before attempting to switch to class B and intermediate delay
@@ -189,12 +189,12 @@ private:
   /**
    * The MAC layer of this node
    */
-  Ptr<LoraMac> m_mac;
+  Ptr<LorawanMac> m_mac;
   
   /**
-   * The EndDeviceLoraMac Layer of this node
+   * The EndDeviceLorawanMac Layer of this node
    */
-  Ptr<EndDeviceLoraMac> m_endDeviceLoraMac;
+  Ptr<EndDeviceLorawanMac> m_endDeviceLorawanMac;
 
   /**
    * The packet size.
@@ -230,7 +230,7 @@ private:
   
   /**
    * Switch to Class B Event that is called when the maximum time out to wait 
-   * for feedback from the EndDeviceLoraMac is reached
+   * for feedback from the EndDeviceLorawanMac is reached
    */
   EventId m_switchToClassBTimeOutEvent;
   

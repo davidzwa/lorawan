@@ -24,7 +24,6 @@
 #include "ns3/double.h"
 #include "ns3/string.h"
 #include "ns3/lora-net-device.h"
-#include "src/core/model/log-macros-enabled.h"
 
 namespace ns3 {
 namespace lorawan {
@@ -119,14 +118,14 @@ EndDeviceClassBApp::BeaconLostCallback ()
 }
 
 void
-EndDeviceClassBApp::ClassBDownlinkCallback (EndDeviceLoraMac::ServiceType serviceType, Ptr<const Packet> packet, uint8_t pingIndex)
+EndDeviceClassBApp::ClassBDownlinkCallback (EndDeviceLorawanMac::ServiceType serviceType, Ptr<const Packet> packet, uint8_t pingIndex)
 {
   NS_LOG_FUNCTION (this << serviceType << packet << pingIndex);
   //Check if the fragment packet decoder is enabled
   if (m_enableFragmentedPacketDecoder.enable)
     { 
-      NS_LOG_DEBUG ("Device UC Address " << m_endDeviceLoraMac->GetDeviceAddress ());
-      //std::cerr << "Device UC Address " << m_endDeviceLoraMac->GetDeviceAddress ().Print () << std::endl;
+      NS_LOG_DEBUG ("Device UC Address " << m_endDeviceLorawanMac->GetDeviceAddress ());
+      //std::cerr << "Device UC Address " << m_endDeviceLorawanMac->GetDeviceAddress ().Print () << std::endl;
       
       //Find the received and the missed packets
       uint32_t fragmentExpected = m_fragmentedPacketDecoder.expectedFragment;
@@ -148,8 +147,8 @@ EndDeviceClassBApp::ClassBDownlinkCallback (EndDeviceLoraMac::ServiceType servic
       // 
       if (currentMissedFragments > 0) 
         {
-          m_fragmentsMissed (m_endDeviceLoraMac->GetMulticastDeviceAddress (),
-                             m_endDeviceLoraMac->GetDeviceAddress (),
+          m_fragmentsMissed (m_endDeviceLorawanMac->GetMulticastDeviceAddress (),
+                             m_endDeviceLorawanMac->GetDeviceAddress (),
                              currentMissedFragments, 
                              totalMissedFragments);
         }
@@ -181,19 +180,19 @@ void
 EndDeviceClassBApp::SwitchToClassB (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
-  NS_LOG_DEBUG ("Unicast Address : " << m_endDeviceLoraMac->GetDeviceAddress ());
+  NS_LOG_DEBUG ("Unicast Address : " << m_endDeviceLorawanMac->GetDeviceAddress ());
   
   if (m_nAttempt!=0 && m_countAttempt > m_nAttempt)
     {
       NS_LOG_DEBUG ("Maximum number of attempt to switch to class B is reached");
       return; 
     }
-  NS_ASSERT (m_endDeviceLoraMac != 0);
+  NS_ASSERT (m_endDeviceLorawanMac != 0);
   
   // Request the Mac to switch to Class B and the Mac will invoke 
   // either BeaconLockedCallback or BeaconLostCallback depending on the 
   // result
-  m_endDeviceLoraMac->SwitchToClassB ();
+  m_endDeviceLorawanMac->SwitchToClassB ();
   
   m_countAttempt++;
   
@@ -312,11 +311,11 @@ EndDeviceClassBApp::StartApplication (void)
     }
   
   //Install callbacks on the end device Mac
-  m_endDeviceLoraMac = m_mac->GetObject<EndDeviceLoraMac> ();
-  NS_ASSERT (m_endDeviceLoraMac != 0);
-  m_endDeviceLoraMac->SetBeaconLockedCallback (MakeCallback (&EndDeviceClassBApp::BeaconLockedCallback,this));
-  m_endDeviceLoraMac->SetBeaconLostCallback (MakeCallback (&EndDeviceClassBApp::BeaconLostCallback,this));
-  m_endDeviceLoraMac->SetClassBDownlinkCallback (MakeCallback (&EndDeviceClassBApp::ClassBDownlinkCallback,this));
+  m_endDeviceLorawanMac = m_mac->GetObject<EndDeviceLorawanMac> ();
+  NS_ASSERT (m_endDeviceLorawanMac != 0);
+  m_endDeviceLorawanMac->SetBeaconLockedCallback (MakeCallback (&EndDeviceClassBApp::BeaconLockedCallback,this));
+  m_endDeviceLorawanMac->SetBeaconLostCallback (MakeCallback (&EndDeviceClassBApp::BeaconLostCallback,this));
+  m_endDeviceLorawanMac->SetClassBDownlinkCallback (MakeCallback (&EndDeviceClassBApp::ClassBDownlinkCallback,this));
   
   //Check if packet fragmentation is enabled and then configure
   if (m_enableFragmentedPacketDecoder.enable)
@@ -326,7 +325,7 @@ EndDeviceClassBApp::StartApplication (void)
         
       //If the last fragment sequence number is invalid or zero set to the max 
       if (last < first || last == 0)  last = std::numeric_limits<uint32_t>::max ();
-      uint8_t dr = m_endDeviceLoraMac->GetPingSlotReceiveWindowDataRate ();
+      uint8_t dr = m_endDeviceLorawanMac->GetPingSlotReceiveWindowDataRate ();
       NS_LOG_DEBUG ("Setting size of a pcket");
       uint8_t size = (uint8_t)m_maxAppPayloadForDataRate[dr];
       NS_LOG_DEBUG ("Max size of a fragment is " << (int)size);
