@@ -5,7 +5,11 @@
 
 This is an [ns-3](https://www.nsnam.org "ns-3 Website") module that can be used
 to perform simulations of a [LoRaWAN](http://www.lora-alliance.org/technology
-"LoRa Alliance") network.
+"LoRa Alliance") network. The orginal module which is intended for Class A has now been extended
+for LoRaWAN Class B.
+
+Please read the `README-EXTENSION.md` for the extension that is added on the orginal module to include 
+LoRaWAN Class B multicast. 
 
 [API documentation](https://signetlabdei.github.io/lorawan-docs/html/index.html).
 
@@ -65,6 +69,7 @@ The module includes the following examples:
 - `simple-network-example`
 - `complete-network-example`
 - `network-server-example`
+- See the `README-EXTENSION.md` for Class B example.
 
 Examples can be run via the `./waf --run example-name` command.
 
@@ -93,6 +98,8 @@ gitter chat](https://gitter.im/ns-3-lorawan "lorawan Gitter chat").
 - Martina Capuzzo
 - Stefano Romagnolo
 - Michele Luvisotto
+- Yonatan Shiferaw (Class B multicast extension)
+- David Zwart (Class B extension)
 
 ## License ##
 
@@ -106,6 +113,11 @@ the [University of Padova](https://unipd.it "Unipd homepage"), under the
 supervision of Prof. Lorenzo Vangelista, Prof. Michele Zorzi and with the help
 of Marco Centenaro.
 
+
+The LoRaWAN Class B multicast part was later added as part of an master's thesis
+at the [Technical University of Delft](https://www.tudelft.nl "TU Delft homepage"), 
+under the supervision of [Dr. Ir. Fernando Kuipers](https://fernandokuipers.nl/).
+
 Publications:
 - D. Magrin, M. Capuzzo and A. Zanella, "A Thorough Study of LoRaWAN Performance Under Different
   Parameter Settings," in IEEE Internet of Things Journal. 2019.
@@ -117,3 +129,5 @@ Publications:
   networks in a smart city scenario," 2017 IEEE International Conference On
   Communications (ICC), Paris, 2017. [Link](http://ieeexplore.ieee.org/document/7996384/).
 - Network level performances of a LoRa system (Master thesis). [Link](http://tesi.cab.unipd.it/53740/1/dissertation.pdf).
+- LoRaWAN Class B multicast: Scalablity (Master thesis).  Embargo Until 2020-09-26:
+  https://repository.tudelft.nl/islandora/object/uuid:09af41b0-28ec-40f2-b858-4cbd75edae0c?collection=education
