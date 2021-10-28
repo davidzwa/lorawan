@@ -182,7 +182,7 @@ GatewayLorawanMac::GetWaitingTime (double frequency)
 }
 
 void
-GatewayLoraMac::EnableBeaconTransmission (void)
+GatewayLorawanMac::EnableBeaconTransmission (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -190,7 +190,7 @@ GatewayLoraMac::EnableBeaconTransmission (void)
 }
 
 void
-GatewayLoraMac::DisableBeaconTransmission (void)
+GatewayLorawanMac::DisableBeaconTransmission (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -198,7 +198,7 @@ GatewayLoraMac::DisableBeaconTransmission (void)
 }
 
 bool
-GatewayLoraMac::IsBeaconTransmissionEnabled ()
+GatewayLorawanMac::IsBeaconTransmissionEnabled ()
 {
   NS_LOG_FUNCTION_NOARGS ();  
   
@@ -206,7 +206,7 @@ GatewayLoraMac::IsBeaconTransmissionEnabled ()
 }
 
 void
-GatewayLoraMac::EnableClassBTransmission ()
+GatewayLorawanMac::EnableClassBTransmission ()
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -214,7 +214,7 @@ GatewayLoraMac::EnableClassBTransmission ()
 }
 
 void
-GatewayLoraMac::DisableClassBTransmission ()
+GatewayLorawanMac::DisableClassBTransmission ()
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -222,7 +222,7 @@ GatewayLoraMac::DisableClassBTransmission ()
 }
 
 bool
-GatewayLoraMac::IsClassBTransmissionEnabled ()
+GatewayLorawanMac::IsClassBTransmissionEnabled ()
 {
   NS_LOG_FUNCTION_NOARGS ();
   
@@ -230,7 +230,7 @@ GatewayLoraMac::IsClassBTransmissionEnabled ()
 }
 
 void
-GatewayLoraMac::AddMulticastGroup (LoraDeviceAddress mcAddress)
+GatewayLorawanMac::AddMulticastGroup (LoraDeviceAddress mcAddress)
 {
   NS_LOG_FUNCTION_NOARGS ();
 // Check if the address already exists
@@ -246,13 +246,13 @@ if(it == m_mcAddressList.end())
 }
 
 std::list<LoraDeviceAddress>
-GatewayLoraMac::GetMulticastGroups ()
+GatewayLorawanMac::GetMulticastGroups ()
 {
   return m_mcAddressList;
 }
 
 bool
-GatewayLoraMac::CheckMulticastGroup (LoraDeviceAddress mcAddress)
+GatewayLorawanMac::CheckMulticastGroup (LoraDeviceAddress mcAddress)
 {
   // Check if the address exists
   std::list<LoraDeviceAddress>::iterator it;

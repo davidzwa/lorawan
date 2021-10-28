@@ -26,6 +26,7 @@
 #include "ns3/lorawan-mac.h"
 #include "ns3/attribute.h"
 #include "ns3/end-device-lorawan-mac.h"
+#include "ns3/class-b-end-device-lorawan-mac.h"
 
 namespace ns3 {
 namespace lorawan {
@@ -52,7 +53,7 @@ public:
   /**
    * Callback invoked when packet is received via ping slot
    */
-  void ClassBDownlinkCallback (EndDeviceLorawanMac::ServiceType serviceType, Ptr<const Packet> packet, uint8_t pingIndex);
+  void ClassBDownlinkCallback (ClassBEndDeviceLorawanMac::ServiceType serviceType, Ptr<const Packet> packet, uint8_t pingIndex);
   
   /**
    * Set the Initial delay before attempting to switch to class B and intermediate delay
