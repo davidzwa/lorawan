@@ -122,7 +122,21 @@ public:
    * \param dataRate The data rate.
    */
   void SetDataRate (uint8_t dataRate);
-
+  
+  /**
+   * Set the packet as beacon packet
+   * 
+   * \param enableBeacon true if packet is beacon packet
+   */
+  void SetAsBeaconPacket (bool enableBeacon);
+  
+  /**
+   * Check whether the packet is a beacon packet
+   * 
+   * \return true is the packet is a beacon packet.
+   */
+  bool IsBeaconPacket (void);
+  
 private:
   uint8_t m_sf; //!< The Spreading Factor used by the packet.
   uint8_t m_destroyedBy; //!< The Spreading Factor that destroyed the packet.
@@ -130,6 +144,8 @@ private:
   uint8_t m_dataRate; //!< The Data Rate that needs to be used to send this
   //!packet.
   double m_frequency; //!< The frequency of this packet
+  
+  bool m_enableBeacon; //!< Whether the packet is a beacon transmission or not.
 };
 } // namespace ns3
 }

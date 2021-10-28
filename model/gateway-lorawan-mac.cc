@@ -23,6 +23,7 @@
 #include "ns3/lora-net-device.h"
 #include "ns3/lora-frame-header.h"
 #include "ns3/log.h"
+#include "ns3/bcn-payload.h"
 
 namespace ns3 {
 namespace lorawan {
@@ -67,6 +68,19 @@ GatewayLorawanMac::Send (Ptr<Packet> packet)
   NS_LOG_DEBUG ("Freq: " << frequency << " MHz");
   packet->AddPacketTag (tag);
 
+  //If it a beacon packet and the device is not enabled to transmit beacon 
+  //then we need to skip it
+  bool beaconPacket = tag.IsBeaconPacket ();
+  if (beaconPacket && !m_beaconTransmission)
+  {
+    NS_LOG_DEBUG ("This Gateway is not enabled to transmit beacons!");
+    return;
+  }
+  else if (beaconPacket)
+  {
+    NS_LOG_DEBUG ("Transmitting beacon packet!");
+  }
+
   // Make sure we can transmit this packet
   if (m_channelHelper.GetWaitingTime(CreateObject<LogicalLoraChannel> (frequency)) > Time(0))
     {
@@ -80,7 +94,8 @@ GatewayLorawanMac::Send (Ptr<Packet> packet)
   params.headerDisabled = false;
   params.codingRate = 1;
   params.bandwidthHz = GetBandwidthFromDataRate (dataRate);
-  params.nPreamble = 8;
+    //Beacon Packet uses longer preamble (10) in-order to allow low power duty cycling for the end-nodes
+  params.nPreamble = (beaconPacket ? 10 : 8);
   params.crcEnabled = 1;
   params.lowDataRateOptimizationEnabled = LoraPhy::GetTSym (params) > MilliSeconds (16) ? true : false;
 
@@ -117,6 +132,16 @@ GatewayLorawanMac::Receive (Ptr<Packet const> packet)
   // Make a copy of the packet to work on
   Ptr<Packet> packetCopy = packet->Copy ();
 
+  BcnPayload bcnPayload;
+  packetCopy->PeekHeader (bcnPayload);
+  
+  //Drop right here if it is a beacon packet
+  if (bcnPayload.GetBcnTime() != 0)
+  {
+    NS_LOG_DEBUG ("Not forwarding beacon packet");
+    return;
+  }
+  
   // Only forward the packet if it's uplink
   LorawanMacHeader macHdr;
   packetCopy->PeekHeader (macHdr);
@@ -155,5 +180,87 @@ GatewayLorawanMac::GetWaitingTime (double frequency)
   return m_channelHelper.GetWaitingTime (CreateObject<LogicalLoraChannel>
                                            (frequency));
 }
+
+void
+GatewayLoraMac::EnableBeaconTransmission (void)
+{
+  NS_LOG_FUNCTION_NOARGS ();
+  
+  m_beaconTransmission = true;
+}
+
+void
+GatewayLoraMac::DisableBeaconTransmission (void)
+{
+  NS_LOG_FUNCTION_NOARGS ();
+  
+  m_beaconTransmission = false;
+}
+
+bool
+GatewayLoraMac::IsBeaconTransmissionEnabled ()
+{
+  NS_LOG_FUNCTION_NOARGS ();  
+  
+  return m_beaconTransmission;
+}
+
+void
+GatewayLoraMac::EnableClassBTransmission ()
+{
+  NS_LOG_FUNCTION_NOARGS ();
+  
+  m_classBTransmission = true;
+}
+
+void
+GatewayLoraMac::DisableClassBTransmission ()
+{
+  NS_LOG_FUNCTION_NOARGS ();
+  
+  m_classBTransmission = false;
+}
+
+bool
+GatewayLoraMac::IsClassBTransmissionEnabled ()
+{
+  NS_LOG_FUNCTION_NOARGS ();
+  
+  return m_classBTransmission;
+}
+
+void
+GatewayLoraMac::AddMulticastGroup (LoraDeviceAddress mcAddress)
+{
+  NS_LOG_FUNCTION_NOARGS ();
+// Check if the address already exists
+std::list<LoraDeviceAddress>::iterator it;
+it = std::find(m_mcAddressList.begin(), m_mcAddressList.end(), mcAddress);
+ 
+// Add to the list if not
+if(it == m_mcAddressList.end())
+  {
+    m_mcAddressList.push_back (mcAddress);
+  }
+
+}
+
+std::list<LoraDeviceAddress>
+GatewayLoraMac::GetMulticastGroups ()
+{
+  return m_mcAddressList;
+}
+
+bool
+GatewayLoraMac::CheckMulticastGroup (LoraDeviceAddress mcAddress)
+{
+  // Check if the address exists
+  std::list<LoraDeviceAddress>::iterator it;
+  it = std::find(m_mcAddressList.begin(), m_mcAddressList.end(), mcAddress);
+ 
+  // Return true if the address if found otherwise return false
+  return (it != m_mcAddressList.end());
+}
+
 }
 }

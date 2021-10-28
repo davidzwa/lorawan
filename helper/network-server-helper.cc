@@ -38,6 +38,11 @@ NetworkServerHelper::NetworkServerHelper ()
   p2pHelper.SetDeviceAttribute ("DataRate", StringValue ("5Mbps"));
   p2pHelper.SetChannelAttribute ("Delay", StringValue ("2ms"));
   SetAdr ("ns3::AdrComponent");
+
+  m_classBEnabled = false;
+  m_beaconEnabled = false;
+  m_enableSequencedPacketGeneration = false;
+  m_pingDownlinkPacketSize = 255; // maximum packet size is used by default
 }
 
 NetworkServerHelper::~NetworkServerHelper ()
@@ -61,6 +66,37 @@ NetworkServerHelper::SetEndDevices (NodeContainer endDevices)
 {
   m_endDevices = endDevices;
 }
+
+void
+NetworkServerHelper::EnableClassBDownlink (bool enable)
+{
+  m_classBEnabled = enable;
+}
+
+void
+NetworkServerHelper::EnableBeaconTransmission (bool enable)
+{
+  m_beaconEnabled = enable;
+}
+
+void 
+NetworkServerHelper::EnableSequencedPacketGeneration (bool enable)
+{
+  m_enableSequencedPacketGeneration = enable;
+}
+
+void
+NetworkServerHelper::SetPingDownlinkPacketSize (uint8_t pingDownlinkPacketSize)
+{
+  m_pingDownlinkPacketSize = pingDownlinkPacketSize;
+}
+
+uint8_t
+NetworkServerHelper::GetPingDownlinkPacketSize () const
+{
+  return m_pingDownlinkPacketSize;
+}
+
 
 ApplicationContainer
 NetworkServerHelper::Install (Ptr<Node> node)
@@ -89,6 +125,12 @@ NetworkServerHelper::InstallPriv (Ptr<Node> node)
 
   app->SetNode (node);
   node->AddApplication (app);
+
+  // Configuring the app
+  app->EnableClassBDownlink (m_classBEnabled);
+  app->EnableBeaconTransmission (m_beaconEnabled);
+  app->EnableSequencedPacketGeneration (m_enableSequencedPacketGeneration);
+  app->SetPingDownlinkPacketSize (m_pingDownlinkPacketSize);
 
   // Cycle on each gateway
   for (NodeContainer::Iterator i = m_gateways.Begin ();

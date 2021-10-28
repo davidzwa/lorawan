@@ -73,6 +73,47 @@ public:
    */
   void SetAdr (std::string type);
 
+  /**
+   * To Enable the servers for the class B downlink transmission
+   * 
+   * \param enable true to enable class B downlink transmission and false to 
+   * disable
+   */
+  void EnableClassBDownlink (bool enable);
+  
+  /**
+   * To enable the servers for beacon transmission
+   * 
+   * \param enable true to enable beacon transmission and false to disable
+   */
+  void EnableBeaconTransmission (bool enable);
+  
+  /**
+   * Enable Fragmented Data Generation which leads to sequenced packet generation
+   * 
+   * \param enable if true it enables the sequenced packet generation
+   */
+  void EnableSequencedPacketGeneration (bool enable);
+  
+  /**
+   * Set the packet size for the ping downlink
+   * 
+   * \param [in] downlinkPacketSize downlink packet size to be used for downlink.
+   * If it is 0 randomSize will be selected and if it is above the maximum packet
+   * size the data-rate support to 255 the corresponding maximum packet size will
+   * be used
+   */
+  void SetPingDownlinkPacketSize (uint8_t pingDownlinkPacketSize);
+  
+  /**
+   * Get the packet size set for the ping downlinks
+   * 
+   * \return downlink packet size used for the ping downlink. If it is 0 
+   * randomSize will be selected and if it is above the maximum packet size the 
+   * data-rate support to 255 the corresponding maximum packet size will be used
+   */
+  uint8_t GetPingDownlinkPacketSize (void) const;
+
 private:
   void InstallComponents (Ptr<NetworkServer> netServer);
   Ptr<Application> InstallPriv (Ptr<Node> node);
@@ -88,6 +129,26 @@ private:
   bool m_adrEnabled;
 
   ObjectFactory m_adrSupportFactory;
+    
+  /**
+   * This is enabled when a class B enabled gateway is added to the server
+   */
+  bool m_classBEnabled;
+  
+  /**
+   * This is enabled when a beacon transmitting gateway is added to the server
+   */
+  bool m_beaconEnabled;
+  
+  /**
+   * To enable sequenced packet generation
+   */
+  bool m_enableSequencedPacketGeneration;
+  
+  /**
+   * ping downlink packet size to be used for all multicast groups
+   */
+  uint8_t m_pingDownlinkPacketSize;
 };
 
 } // namespace ns3
