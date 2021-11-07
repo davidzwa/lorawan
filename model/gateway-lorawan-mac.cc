@@ -24,6 +24,7 @@
 #include "ns3/lora-frame-header.h"
 #include "ns3/log.h"
 #include "ns3/bcn-payload.h"
+#include <algorithm>
 
 namespace ns3 {
 namespace lorawan {

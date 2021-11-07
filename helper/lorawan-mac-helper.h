@@ -26,6 +26,7 @@
 #include "ns3/lora-phy.h"
 #include "ns3/lorawan-mac.h"
 #include "ns3/class-a-end-device-lorawan-mac.h"
+#include "ns3/class-b-end-device-lorawan-mac.h"
 #include "ns3/lora-device-address-generator.h"
 #include "ns3/gateway-lorawan-mac.h"
 #include "ns3/node-container.h"
@@ -162,7 +163,7 @@ public:
    * 
    * \returnthe list of multicast group's LoraDeviceAddress created
    */
-  std::vector<LoraDeviceAddress> CreateNMulticastGroup (NodeContainer endDevices,  NodeContainer gateways, uint32_t numberOfDevicesPerGroups, uint8_t dr, uint8_t pingSlotPeriodicity, uint8_t enableCoordinatedRelaying = 0, double channel=869.525);  
+  std::vector<LoraDeviceAddress> CreateNMulticastGroup (NodeContainer endDevices, NodeContainer gateways, uint32_t numberOfDevicesPerGroups, uint8_t dr, uint8_t pingSlotPeriodicity, uint8_t enableCoordinatedRelaying = 0, double channel=869.525);  
   
   
   /**

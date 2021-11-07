@@ -792,8 +792,8 @@ LorawanMacHelper::AddToMulticastGroup (Ptr<Node> endNode, LoraDeviceAddress mcDe
   
   Ptr<LoraNetDevice> loraNetDevice = netDevice->GetObject<LoraNetDevice> ();
   NS_ASSERT (loraNetDevice != 0);
-      
-  Ptr<EndDeviceLorawanMac> mac = loraNetDevice->GetMac ()->GetObject<EndDeviceLorawanMac> ();
+
+  Ptr<ClassBEndDeviceLorawanMac> mac = loraNetDevice->GetMac()->GetObject<ClassBEndDeviceLorawanMac>();
   NS_ASSERT (mac != 0);
   
   //Setting the multicast address for the end device

@@ -191,11 +191,11 @@ private:
    * The MAC layer of this node
    */
   Ptr<LorawanMac> m_mac;
-  
+
   /**
-   * The EndDeviceLorawanMac Layer of this node
+   * The ClassBEndDeviceLorawanMac Layer of this node
    */
-  Ptr<EndDeviceLorawanMac> m_endDeviceLorawanMac;
+  Ptr<ClassBEndDeviceLorawanMac> m_endDeviceLorawanMac;
 
   /**
    * The packet size.

@@ -118,7 +118,7 @@ EndDeviceClassBApp::BeaconLostCallback ()
 }
 
 void
-EndDeviceClassBApp::ClassBDownlinkCallback (EndDeviceLorawanMac::ServiceType serviceType, Ptr<const Packet> packet, uint8_t pingIndex)
+EndDeviceClassBApp::ClassBDownlinkCallback (ClassBEndDeviceLorawanMac::ServiceType serviceType, Ptr<const Packet> packet, uint8_t pingIndex)
 {
   NS_LOG_FUNCTION (this << serviceType << packet << pingIndex);
   //Check if the fragment packet decoder is enabled
